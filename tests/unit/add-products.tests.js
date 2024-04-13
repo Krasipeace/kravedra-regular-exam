@@ -1,17 +1,17 @@
 const assert = require('assert');
 const fetch = require('node-fetch');
 
-suite('Add Products page', function() {
-  test('Page title', async function() {
+suite('Add Products page', function () {
+  test('Page title', async function () {
     let res = await fetch("http://localhost:8888/add-product");
     let body = await res.text();
     assert.ok(body.includes("<h1>Add New Product</h1>"));
   });
 
-  test('Product HTML form', async function() {
-    let res = await fetch("http://localhost:8080/Add-Product");
+  test('Product HTML form', async function () {
+    let res = await fetch("http://localhost:8888/Add-Product");
     let body = await res.text();
-    
+
     let nameFieldFound = body.includes('<input id="name" type="text" name="name"/>');
     assert.ok(nameFieldFound, "Field 'name' is missing");
 
@@ -22,7 +22,7 @@ suite('Add Products page', function() {
     assert.ok(buttonAddFound, "Button [Add] is missing");
   });
 
-  test('Add valid product', async function() {
+  test('Add valid product', async function () {
     let res = await fetch(
       "http://localhost:8888/Add-Product",
       {
@@ -35,12 +35,12 @@ suite('Add Products page', function() {
     );
     let body = await res.text();
     let productsReturned = body.includes(
-		"<ul><li>Water - 1 cup</li><li>Eggs - 3</li><li>Flour - 1 cup</li><li>Salami - 100 g</li></ul>");
+      "<ul><li>Water - 1 cup</li><li>Eggs - 3</li><li>Flour - 1 cup</li><li>Salami - 100 g</li></ul>");
     assert.ok(productsReturned, "Add product failed");
   });
 
-  test('Add invalid product', async function() {
-     let res = await fetch(
+  test('Add invalid product', async function () {
+    let res = await fetch(
       "http://localhost:8888/Add-Product",
       {
         method: 'POST',
@@ -56,7 +56,7 @@ suite('Add Products page', function() {
 
     res = await fetch("http://localhost:8888/");
     body = await res.text();
-	  assert.ok(body.includes("Cookbook: <b>3</b>"), 
-		"Add invalid product should not change the products count");
+    assert.ok(body.includes("Cookbook: <b>3</b>"),
+      "Add invalid product should not change the products count");
   });
 });
